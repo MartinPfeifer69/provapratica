@@ -6,7 +6,6 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:jsf="http://xmlns.jcp.org/jsf">
 
 <ui:composition template="/template/layoutBase.xhtml">
@@ -29,15 +28,16 @@
 						<p:inputText id="nome"
 							value="#{produtoController.produtoModel.nomeProduto}" />
 
-						<p:outputLabel for="id_categoria" value="Categoria:" />
-						<p:selectOneMenu id="id_categoria" value="#{produtoController.produtoModel.categoria}">
-							<f:selectItem itemValue="" itemLabel="Selecione uma categoria" />
-							<t:selectItems value="#{produtoController.listaCategorias}"
-								var="c" itemLabel="#{c.nomeCategoria}" itemValue="#{c}" />
+						<p:outputLabel for="id_categoria" value="Categoria:"  />
+						<p:selectOneMenu id="id_categoria" converter="entityConverter" value="#{produtoController.produtoModel.categoria}">
+							<f:selectItem itemValue="" itemLabel="Selecione uma categoria" noSelectionOption="true"/>
+							<f:selectItems value="#{produtoController.listaCategorias}"
+								var="c" itemValue="#{c}" itemLabel="#{c.nomeCategoria}"/>
 						</p:selectOneMenu>
 						<h:message for="id_categoria"
 							errorStyle="color:darkred;font-size:11px;"></h:message>
-
+						<br></br>
+						
 						<p:outputLabel for="qtdPorUnidade" value="Qtd. por Unidade" />
 						<p:inputText id="qtdPorUnidade"
 							value="#{produtoController.produtoModel.quantidadePorUnidade}" />
