@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+<ui:composition template="/template/layoutBase.xhtml">
+	<ui:define name="content">
+		<h:body onload="#{produtoController.listarCategorias()}">
+
+			<h1 class="aw-page-title">Cadastro de Produto</h1>
+
+			<h:form id="frm_produto">
+
+				<p:messages id="msg" showDetail="false" autoUpdate="true"
+					closable="true" />
+
+				<div class="ui-fluid">
+					<p:panelGrid columns="4" layout="grid" style="margin-top:5px;"
+						columnClasses="ui-grid-col-2, ui-grid-col-4, ui-grid-col-2, ui-grid-col-4">
+
+
+						<p:outputLabel for="nome" value="Nome:" />
+						<p:inputText id="nome"
+							value="#{produtoController.produtoModel.nomeProduto}" />
+
+						<p:outputLabel for="id_categoria" value="Categoria:" />
+						<p:selectOneMenu id="id_categoria" value="#{produtoController.produtoModel.categoria}">
+							<f:selectItem itemValue="" itemLabel="Selecione uma categoria" />
+							<t:selectItems value="#{produtoController.listaCategorias}"
+								var="c" itemLabel="#{c.nomeCategoria}" itemValue="#{c}" />
+						</p:selectOneMenu>
+						<h:message for="id_categoria"
+							errorStyle="color:darkred;font-size:11px;"></h:message>
+
+						<p:outputLabel for="qtdPorUnidade" value="Qtd. por Unidade" />
+						<p:inputText id="qtdPorUnidade"
+							value="#{produtoController.produtoModel.quantidadePorUnidade}" />
+
+						<p:outputLabel for="precoUnitario" value="Preço Unitário"
+							decimalPlaces="15" />
+						<p:inputText id="precoUnitario" onkeypress="mascara(this,moeda)"
+							value="#{produtoController.produtoModel.precoUnitario}" />
+
+						<p:outputLabel for="unidadesEmEstoque" value="Unidades em Estoque" />
+						<p:inputText id="unidadesEmEstoque"
+							value="#{produtoController.produtoModel.unidadesEmEstoque}" />
+
+						<p:outputLabel for="unidadesEmOrdem" value="Unidades em Ordem" />
+						<p:inputText id="unidadesEmOrdem"
+							value="#{produtoController.produtoModel.unidadesEmOrdem}" />
+
+						<p:outputLabel for="nivelDeResposicao" value="Nivel de Reposição" />
+						<p:inputText id="nivelDeResposicao"
+							value="#{produtoController.produtoModel.nivelDeReposicao}" />
+
+						<h:inputHidden id="idProduto"
+							value="#{produtoController.produtoModel.id}" />
+
+						<td align="right"><p:commandButton value="Salvar"
+								icon="ui-icon-gear" action="#{produtoController.salvar}"
+								update="@form" /></td>
+
+					</p:panelGrid>
+
+				</div>
+
+				<div class="ui-fluid">
+					<p:dataTable var="produto" id="tabelaProduto"
+						value="#{produtoController.listaProdutos}"
+						style="margin-top:20px;" reflow="true" paginator="true"
+						paginatorPosition="bottom" rows="5"
+						rowsPerPageTemplate="5, 10, 20"
+						emptyMessage="Nenhum registro cadastrado.">
+						<f:facet name="header">
+						Listagem de Produtos
+					</f:facet>
+
+						<p:column headerText="Nome">
+							<h:outputText value="#{produto.nomeProduto}" />
+						</p:column>
+
+						<p:column headerText="Qtd. Por Unidade">
+							<h:outputText value="#{produto.quantidadePorUnidade}" />
+						</p:column>
+
+						<p:column headerText="Preço Unitário">
+							<h:outputText value="#{produto.precoUnitario}" />
+						</p:column>
+
+						<p:column headerText="Unidades em Estoque">
+							<h:outputText value="#{produto.unidadesEmEstoque}" />
+						</p:column>
+
+						<p:column headerText="Unidades em Ordem">
+							<h:outputText value="#{produto.unidadesEmOrdem}" />
+						</p:column>
+
+						<p:column headerText="Nível de Reposição">
+							<h:outputText value="#{produto.nivelDeReposicao}" />
+						</p:column>
+
+						<p:column headerText="Ação" style="text-align:center">
+							<p:commandButton style="width:30px;" process="@this"
+								update="tabelaProduto" icon="ui-icon-circle-close"
+								action="#{produtoController.excluir(produto)}" title="Excluir"
+								onclick="return confirm('Deseja realmente excluir?')" />
+
+							<p:commandButton style="width:30px;" process="@this"
+								update="@form" icon="ui-icon-pencil"
+								action="#{produtoController.editar(produto)}" title="Editar" />
+						</p:column>
+					</p:dataTable>
+				</div>
+
+			</h:form>
+		</h:body>
+	</ui:define>
+</ui:composition>
+</html>
